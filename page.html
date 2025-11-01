@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet Git Collaboratif</title>
+    <style>
+        /* Styles de base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* En-tête */
+        header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        /* Navigation */
+        nav {
+            background-color: #333;
+            padding: 1rem 0;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+        }
+        
+        nav li {
+            margin: 0 1rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #6a11cb;
+        }
+        
+        /* Sections principales */
+        section {
+            padding: 3rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        section h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2575fc;
+            font-size: 2rem;
+        }
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card h3 {
+            color: #6a11cb;
+            margin-bottom: 1rem;
+        }
+        
+        /* Section équipe */
+        .team-member {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 4px solid #2575fc;
+        }
+        
+        /* Section tâches */
+        .task-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .task {
+            background-color: white;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .task.completed {
+            opacity: 0.7;
+            text-decoration: line-through;
+        }
+        
+        .task button {
+            background-color: #6a11cb;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .task button:hover {
+            background-color: #2575fc;
+        }
+        
+        /* Section formulaire */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        button[type="submit"] {
+            background-color: #6a11cb;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        button[type="submit"]:hover {
+            background-color: #2575fc;
+        }
+        
+        /* Pied de page */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav li {
+                margin: 0.5rem 0;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- En-tête -->
+    <header>
+        <div class="container">
+            <h1>Projet Git Collaboratif / modification par mohamed </h1>
+            <p>Pratiquez Git avec votre ami en utilisant cette page</p>
+        </div>
+    </header>
+    
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="#apropos">À propos</a></li>
+                <li><a href="#equipe">Équipe</a></li>
+                <li><a href="#taches">Tâches</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Section d'accueil -->
+    <section id="accueil">
+        <div class="container">
+            <h2>Bienvenue dans notre projet Git</h2>
+            <p>Cette page est conçue pour vous aider à pratiquer Git en équipe. Vous pouvez créer des branches, faire des commits, résoudre des conflits et fusionner vos travaux.</p>
+            
+            <div class="card-container">
+                <div class="card">
+                    <h3>Créer des branches</h3>
+                    <p>Chaque membre de l'équipe peut créer sa propre branche pour travailler sur des fonctionnalités spécifiques sans affecter la branche principale.</p>
+                </div>
+                <div class="card">
+                    <h3>Faire des commits</h3>
+                    <p>Enregistrez vos modifications avec des messages de commit descriptifs pour suivre l'évolution du projet.</p>
+                </div>
+                <div class="card">
+                    <h3>Fusionner les branches</h3>
+                    <p>Une fois vos fonctionnalités terminées, fusionnez vos branches dans la branche principale pour intégrer vos travaux.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section à propos -->
+    <section id="apropos">
+        <div class="container">
+            <h2>À propos du projet</h2>
+            <p>Ce projet a pour objectif de vous familiariser avec les concepts de base de Git en situation de collaboration. Vous pouvez modifier n'importe quelle partie de cette page pour pratiquer.</p>
+            
+            <div class="card-container">
+                <div class="card">
+                    <h3>Objectifs d'apprentissage</h3>
+                    <ul>
+                        <li>Créer et gérer des branches</li>
+                        <li>Résoudre les conflits de fusion</li>
+                        <li>Utiliser les pull requests</li>
+                        <li>Collaborer efficacement avec Git</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Instructions</h3>
+                    <p>Chaque personne devrait créer sa propre branche, apporter des modifications, puis essayer de fusionner avec la branche principale. Vous pouvez également créer des conflits intentionnellement pour pratiquer leur résolution.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section équipe -->
+    <section id="equipe">
+        <div class="container">
+            <h2>Notre Équipe</h2>
+            <p>Voici les membres de l'équipe qui travaillent sur ce projet. Vous pouvez ajouter votre propre profil ici.</p>
+            
+            <div class="card-container">
+                <div class="team-member">
+                    <img src="https://via.placeholder.com/150" alt="Membre 1">
+                    <h3>Développeur 1</h3>
+                    <p>Spécialisé en HTML/CSS</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://via.placeholder.com/150" alt="Membre 2">
+                    <h3>Développeur 2</h3>
+                    <p>Spécialisé en JavaScript</p>
+                </div>
+                <!-- Ajoutez d'autres membres d'équipe ici -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section tâches -->
+    <section id="taches">
+        <div class="container">
+            <h2>Tâches à réaliser</h2>
+            <p>Voici une liste de tâches que vous pouvez compléter pour pratiquer Git. Cochez les tâches au fur et à mesure que vous les terminez.</p>
+            
+            <div class="task-list">
+                <div class="task">
+                    <span>Créer une nouvelle branche pour votre travail</span>
+                    <button onclick="completeTask(this)">Terminer</button>
+                </div>
+                <div class="task">
+                    <span>Ajouter votre profil dans la section Équipe</span>
+                    <button onclick="completeTask(this)">Terminer</button>
+                </div>
+                <div class="task">
+                    <span>Modifier le style CSS d'au moins un élément</span>
+                    <button onclick="completeTask(this)">Terminer</button>
+                </div>
+                <div class="task">
+                    <span>Ajouter une nouvelle fonctionnalité JavaScript</span>
+                    <button onclick="completeTask(this)">Terminer</button>
+                </div>
+                <div class="task">
+                    <span>Résoudre un conflit de fusion</span>
+                    <button onclick="completeTask(this)">Terminer</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section contact -->
+    <section id="contact">
+        <div class="container">
+            <h2>Contactez-nous</h2>
+            <p>Utilisez ce formulaire pour nous envoyer un message. Vous pouvez également modifier cette section pour pratiquer Git.</p>
+            
+            <div class="form-container">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Nom</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" required></textarea>
+                    </div>
+                    <button type="submit">Envoyer</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pied de page -->
+    <footer>
+        <div class="container">
+            <p>Projet Git Collaboratif - Pratique des branches et collaboration</p>
+            <p>Créé pour l'apprentissage de Git en équipe</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Fonction pour marquer une tâche comme terminée
+        function completeTask(button) {
+            const task = button.parentElement;
+            task.classList.add('completed');
+            button.textContent = 'Terminé';
+            button.disabled = true;
+            
+            // Vérifier si toutes les tâches sont terminées
+            checkAllTasksCompleted();
+        }
+        
+        // Vérifier si toutes les tâches sont terminées
+        function checkAllTasksCompleted() {
+            const tasks = document.querySelectorAll('.task');
+            const completedTasks = document.querySelectorAll('.task.completed');
+            
+            if (tasks.length === completedTasks.length) {
+                alert('Félicitations ! Vous avez terminé toutes les tâches Git !');
+            }
+        }
+        
+        // Gestion du formulaire de contact
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            // Ici, vous pourriez envoyer les données à un serveur
+            // Pour l'exemple, nous affichons simplement une alerte
+            alert(`Merci ${name} ! Votre message a été envoyé. Nous vous répondrons à ${email}.`);
+            
+            // Réinitialiser le formulaire
+            this.reset();
+        });
+        
+        // Animation simple au défilement
+        window.addEventListener('scroll', function() {
+            const cards = document.querySelectorAll('.card');
+            const windowHeight = window.innerHeight;
+            
+            cards.forEach(card => {
+                const cardPosition = card.getBoundingClientRect().top;
+                
+                if (cardPosition < windowHeight - 100) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
+        });
+        
+        // Initialiser l'opacité des cartes
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s, transform 0.5s';
+            });
+        });
+    </script>
+</body>
+</html>
